@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Cổng Dashboard — Siba Food Vietnam</title>
+  <title>Cổng Dashboard — A.Kitchen Siba Food Vietnam</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
@@ -59,6 +59,8 @@
       width: 40px;
       height: 40px;
       flex-shrink: 0;
+      border-radius: 8px;
+      object-fit: contain;
     }
 
     .header-brand .brand-text {
@@ -173,7 +175,7 @@
       flex: 1;
     }
 
-    /* === Card === */
+    /* === Card (đổi thành button) === */
     .card {
       display: flex;
       flex-direction: column;
@@ -184,6 +186,10 @@
       padding: 1.5rem;
       text-decoration: none;
       color: inherit;
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+      font-size: inherit;
       transition: transform var(--transition), box-shadow var(--transition);
     }
 
@@ -253,7 +259,6 @@
       font-weight: 600;
       padding: .55rem 1.1rem;
       border-radius: var(--radius-btn);
-      pointer-events: none; /* card toàn bộ là link */
     }
 
     .card-lock {
@@ -278,6 +283,170 @@
       color: #8a9a8e;
     }
 
+    /* === Modal Overlay === */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(31, 42, 34, .55);
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-overlay.visible {
+      opacity: 1;
+    }
+
+    .modal {
+      background: var(--paper);
+      border-radius: var(--radius-card);
+      box-shadow: 0 4px 12px rgba(31,42,34,.1), 0 20px 50px rgba(31,42,34,.18);
+      padding: 2rem;
+      width: 100%;
+      max-width: 440px;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: scale(.95) translateY(8px);
+      transition: transform var(--transition);
+    }
+
+    .modal-overlay.visible .modal {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-title {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-size: 1.15rem;
+      margin-bottom: 1.2rem;
+      color: var(--ink);
+      line-height: 1.35;
+    }
+
+    .modal-form { display: flex; flex-direction: column; gap: .9rem; }
+
+    .modal-field label {
+      display: block;
+      font-size: .78rem;
+      font-weight: 600;
+      margin-bottom: .3rem;
+      color: var(--ink);
+    }
+
+    .modal-field label .required {
+      color: #c0392b;
+      margin-left: .15rem;
+    }
+
+    .modal-field input {
+      width: 100%;
+      border: 1.5px solid var(--line);
+      border-radius: var(--radius-btn);
+      padding: .6rem .9rem;
+      font-size: .88rem;
+      font-family: inherit;
+      color: var(--ink);
+      background: var(--cream);
+      outline: none;
+      transition: border-color var(--transition);
+    }
+
+    .modal-field input:focus-visible {
+      border-color: var(--gold-dark);
+      box-shadow: 0 0 0 3px rgba(206,155,63,.18);
+    }
+
+    .modal-field input.invalid {
+      border-color: #c0392b;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: .6rem;
+      margin-top: .5rem;
+    }
+
+    .btn-submit {
+      flex: 1;
+      border: none;
+      background: linear-gradient(135deg, var(--green-deep), var(--green));
+      color: #F6F1E2;
+      font-size: .88rem;
+      font-weight: 600;
+      padding: .7rem 1.2rem;
+      border-radius: var(--radius-btn);
+      cursor: pointer;
+      font-family: inherit;
+      transition: opacity var(--transition);
+    }
+
+    .btn-submit:hover { opacity: .9; }
+
+    .btn-submit:focus-visible {
+      outline: 2.5px solid var(--gold-dark);
+      outline-offset: 2px;
+    }
+
+    .btn-submit:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    .btn-cancel {
+      border: 1.5px solid var(--line);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: .88rem;
+      font-weight: 500;
+      padding: .7rem 1.2rem;
+      border-radius: var(--radius-btn);
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color var(--transition);
+    }
+
+    .btn-cancel:hover { border-color: var(--gold); }
+
+    .btn-cancel:focus-visible {
+      outline: 2.5px solid var(--gold-dark);
+      outline-offset: 2px;
+    }
+
+    .modal-error {
+      font-size: .8rem;
+      color: #c0392b;
+      font-weight: 500;
+      display: none;
+    }
+
+    .modal-error.show { display: block; }
+
+    /* Trạng thái thành công trong modal */
+    .modal-success {
+      text-align: center;
+      padding: 1rem 0;
+    }
+
+    .modal-success .success-icon {
+      font-size: 2.5rem;
+      margin-bottom: .8rem;
+    }
+
+    .modal-success p {
+      font-size: .9rem;
+      color: var(--ink);
+      line-height: 1.6;
+      margin-bottom: 1.2rem;
+    }
+
     /* === Accessibility: giảm chuyển động === */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
@@ -291,6 +460,8 @@
       .header { padding: 2rem 1rem 3.5rem; }
       .toolbar { margin: -1.5rem .75rem 1.5rem; padding: .8rem; }
       .grid { padding: 0 .75rem 2rem; gap: 1rem; }
+      .modal { padding: 1.5rem; }
+      .modal-actions { flex-direction: column-reverse; }
     }
   </style>
 </head>
@@ -299,13 +470,7 @@
   <!-- Header -->
   <header class="header">
     <div class="header-brand">
-      <svg class="mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <ellipse cx="50" cy="34" rx="30" ry="6" stroke="currentColor" stroke-width="4"/>
-        <path d="M20,34 Q20,68 50,74 Q80,68 80,34" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round"/>
-        <path d="M38,10 Q34,20 40,26" stroke="#CE9B3F" stroke-width="4" fill="none" stroke-linecap="round"/>
-        <path d="M50,6 Q46,17 52,24" stroke="#CE9B3F" stroke-width="4" fill="none" stroke-linecap="round"/>
-        <path d="M62,10 Q58,20 64,26" stroke="#CE9B3F" stroke-width="4" fill="none" stroke-linecap="round"/>
-      </svg>
+      <img class="mark" src="https://drive.google.com/thumbnail?id=1gTmx63YTDqzU2qfPD7oKzYfhhYSgVWGY&sz=w200" alt="A.Kitchen Logo">
       <div class="brand-text">
         <div class="brand-name">A.Kitchen</div>
         <div class="brand-sub">Siba Food Vietnam</div>
@@ -324,10 +489,26 @@
   <!-- Lưới dashboard -->
   <main class="grid" id="grid"></main>
 
+  <!-- Modal xin quyền truy cập -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal" id="modalContent">
+      <!-- Nội dung được render bằng JS -->
+    </div>
+  </div>
+
   <!-- Footer -->
-  <footer class="footer">Nội bộ Siba Food Vietnam · Cập nhật thủ công danh sách trong file này</footer>
+  <footer class="footer">Nội bộ A.Kitchen - Siba Food Vietnam</footer>
 
   <script>
+    /* =========================================================
+       CẤU HÌNH GATEKEEPER
+       ---------------------------------------------------------
+       Sau khi deploy Apps Script Gatekeeper (Phần A), paste URL
+       /exec vào đây. Portal sẽ gọi POST đến URL này khi user
+       submit form xin quyền truy cập.
+       ========================================================= */
+    const GATEKEEPER_URL = "https://script.google.com/macros/s/AKfycbx4rzDP4ore6ucJaTsGTs5-JKWH6500lB3fS4KPUCinnGTkq5ExrEaiXpUZFv7L8dsN/exec";
+
     /* =========================================================
        DỮ LIỆU DASHBOARD
        ---------------------------------------------------------
@@ -369,6 +550,8 @@
     const grid = document.getElementById("grid");
     const searchInput = document.getElementById("searchInput");
     const tagsContainer = document.getElementById("tagsContainer");
+    const modalOverlay = document.getElementById("modalOverlay");
+    const modalContent = document.getElementById("modalContent");
 
     let activeTag = "Tất cả";
 
@@ -386,7 +569,7 @@
       ).join("");
     }
 
-    // Render lưới card
+    // Render lưới card — dùng <button> thay vì <a>
     function renderGrid() {
       const keyword = searchInput.value.trim().toLowerCase();
       const filtered = DASHBOARDS.filter(d => {
@@ -400,8 +583,8 @@
         return;
       }
 
-      grid.innerHTML = filtered.map(d => `
-        <a class="card" href="${d.url}" target="_blank" rel="noopener">
+      grid.innerHTML = filtered.map((d, i) => `
+        <button class="card" type="button" data-index="${DASHBOARDS.indexOf(d)}">
           <div class="card-header">
             <span class="card-icon">${d.icon}</span>
             <span class="card-tag">${d.tag}</span>
@@ -409,10 +592,10 @@
           <div class="card-title">${d.name}</div>
           <div class="card-desc">${d.desc}</div>
           <div class="card-footer">
-            <span class="card-btn">Mở dashboard ↗</span>
+            <span class="card-btn">Yêu cầu truy cập</span>
             <span class="card-lock">🔒 Yêu cầu quyền truy cập Google</span>
           </div>
-        </a>
+        </button>
       `).join("");
     }
 
@@ -426,6 +609,180 @@
 
     // Sự kiện: gõ tìm kiếm
     searchInput.addEventListener("input", renderGrid);
+
+    // Sự kiện: bấm card → mở modal
+    grid.addEventListener("click", e => {
+      const card = e.target.closest(".card");
+      if (!card) return;
+      const idx = parseInt(card.dataset.index, 10);
+      const dashboard = DASHBOARDS[idx];
+      if (dashboard) openModal(dashboard);
+    });
+
+    /* === Modal xin quyền truy cập === */
+    let lastFocusedElement = null;
+
+    function openModal(dashboard) {
+      lastFocusedElement = document.activeElement;
+
+      // Render form
+      modalContent.innerHTML = `
+        <h2 class="modal-title" id="modalTitle">Yêu cầu truy cập: ${dashboard.name}</h2>
+        <form class="modal-form" id="accessForm" novalidate>
+          <div class="modal-field">
+            <label for="inputName">Họ tên <span class="required">*</span></label>
+            <input type="text" id="inputName" required autocomplete="name" placeholder="Nguyễn Văn A">
+          </div>
+          <div class="modal-field">
+            <label for="inputEmail">Email <span class="required">*</span></label>
+            <input type="email" id="inputEmail" required autocomplete="email" placeholder="email@company.com">
+          </div>
+          <div class="modal-field">
+            <label for="inputDept">Bộ phận</label>
+            <input type="text" id="inputDept" autocomplete="organization" placeholder="Ví dụ: Vận hành, Kinh doanh...">
+          </div>
+          <p class="modal-error" id="modalError"></p>
+          <div class="modal-actions">
+            <button type="submit" class="btn-submit" id="btnSubmit">Gửi yêu cầu</button>
+            <button type="button" class="btn-cancel" id="btnCancel">Huỷ</button>
+          </div>
+        </form>
+      `;
+
+      // Hiện modal
+      modalOverlay.classList.add("open");
+      requestAnimationFrame(() => {
+        modalOverlay.classList.add("visible");
+      });
+
+      // Focus vào ô đầu tiên
+      setTimeout(() => {
+        document.getElementById("inputName").focus();
+      }, 50);
+
+      // Xử lý submit
+      const form = document.getElementById("accessForm");
+      form.addEventListener("submit", e => {
+        e.preventDefault();
+        handleSubmit(dashboard);
+      });
+
+      // Nút Huỷ
+      document.getElementById("btnCancel").addEventListener("click", closeModal);
+    }
+
+    function closeModal() {
+      modalOverlay.classList.remove("visible");
+      setTimeout(() => {
+        modalOverlay.classList.remove("open");
+        modalContent.innerHTML = "";
+      }, 200);
+      if (lastFocusedElement) lastFocusedElement.focus();
+    }
+
+    // Đóng modal khi bấm overlay
+    modalOverlay.addEventListener("click", e => {
+      if (e.target === modalOverlay) closeModal();
+    });
+
+    // Đóng modal khi bấm Esc
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape" && modalOverlay.classList.contains("open")) {
+        closeModal();
+      }
+    });
+
+    // Validate email đơn giản
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    // Xử lý gửi form
+    async function handleSubmit(dashboard) {
+      const nameInput = document.getElementById("inputName");
+      const emailInput = document.getElementById("inputEmail");
+      const deptInput = document.getElementById("inputDept");
+      const errorEl = document.getElementById("modalError");
+      const btnSubmit = document.getElementById("btnSubmit");
+
+      // Reset trạng thái lỗi
+      nameInput.classList.remove("invalid");
+      emailInput.classList.remove("invalid");
+      errorEl.classList.remove("show");
+
+      const name = nameInput.value.trim();
+      const email = emailInput.value.trim();
+      const dept = deptInput.value.trim();
+
+      // Validate
+      if (!name) {
+        nameInput.classList.add("invalid");
+        nameInput.focus();
+        errorEl.textContent = "Vui lòng nhập họ tên.";
+        errorEl.classList.add("show");
+        return;
+      }
+      if (!email || !isValidEmail(email)) {
+        emailInput.classList.add("invalid");
+        emailInput.focus();
+        errorEl.textContent = "Email không hợp lệ.";
+        errorEl.classList.add("show");
+        return;
+      }
+
+      // Disable nút, đổi text
+      btnSubmit.disabled = true;
+      btnSubmit.textContent = "Đang gửi...";
+
+      try {
+        // Gửi POST — dùng Content-Type text/plain để né preflight CORS
+        const res = await fetch(GATEKEEPER_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            dept: dept,
+            dashboardName: dashboard.name,
+            dashboardUrl: dashboard.url
+          })
+        });
+
+        // Apps Script redirect 302 → fetch sẽ follow tự động
+        // Nếu response ok, parse JSON
+        let result;
+        try {
+          result = await res.json();
+        } catch (_) {
+          // Nếu không parse được JSON nhưng status ok → coi như thành công
+          result = { success: true };
+        }
+
+        if (result.success !== false) {
+          // Hiện thông báo thành công
+          modalContent.innerHTML = `
+            <div class="modal-success">
+              <div class="success-icon">✅</div>
+              <p>Yêu cầu đã được gửi!<br>Vui lòng kiểm tra email (kể cả mục Spam) trong ít phút sau khi được duyệt để nhận link truy cập.</p>
+              <button type="button" class="btn-submit" onclick="closeModal()">Đóng</button>
+            </div>
+          `;
+        } else {
+          // Server trả lỗi logic
+          errorEl.textContent = result.message || "Gửi yêu cầu thất bại, vui lòng thử lại.";
+          errorEl.classList.add("show");
+          btnSubmit.disabled = false;
+          btnSubmit.textContent = "Gửi yêu cầu";
+        }
+
+      } catch (err) {
+        // Lỗi mạng / fetch fail
+        errorEl.textContent = "Gửi yêu cầu thất bại, vui lòng thử lại.";
+        errorEl.classList.add("show");
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = "Gửi yêu cầu";
+      }
+    }
 
     // Khởi tạo
     renderTags();
