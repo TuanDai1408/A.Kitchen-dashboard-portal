@@ -1,0 +1,435 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cổng Dashboard — Siba Food Vietnam</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <style>
+    /* === Biến màu chính === */
+    :root {
+      --ink: #1F2A22;
+      --cream: #FBF7EE;
+      --paper: #FFFFFF;
+      --gold: #CE9B3F;
+      --gold-dark: #A87A2A;
+      --green: #3D6650;
+      --green-deep: #25402F;
+      --line: #E6DFC9;
+      --radius-card: 20px;
+      --radius-btn: 12px;
+      --shadow-card: 0 1px 2px rgba(31,42,34,.06), 0 10px 28px rgba(31,42,34,.08);
+      --shadow-card-hover: 0 2px 4px rgba(31,42,34,.08), 0 16px 36px rgba(31,42,34,.13);
+      --transition: .18s ease;
+    }
+
+    /* === Reset & Base === */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Be Vietnam Pro', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* === Header === */
+    .header {
+      background: linear-gradient(180deg, var(--green-deep), var(--green) 140%);
+      color: #F6F1E2;
+      padding: 2.5rem 1.5rem 4rem;
+      border-radius: 0 0 32px 32px;
+      text-align: center;
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .6rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .header-brand .mark {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+    }
+
+    .header-brand .brand-text {
+      text-align: left;
+    }
+
+    .header-brand .brand-name {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 1.35rem;
+      line-height: 1.2;
+    }
+
+    .header-brand .brand-sub {
+      font-size: .65rem;
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      opacity: .6;
+      font-weight: 500;
+    }
+
+    .header h1 {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-size: clamp(1.5rem, 4vw, 2.1rem);
+      margin-bottom: .5rem;
+    }
+
+    .header p {
+      font-size: .92rem;
+      opacity: .82;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* === Toolbar (nổi đè header) === */
+    .toolbar {
+      max-width: 720px;
+      margin: -2rem auto 2rem;
+      padding: 1rem 1.2rem;
+      background: var(--paper);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-wrap: wrap;
+      gap: .75rem;
+      align-items: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    .toolbar input[type="search"] {
+      flex: 1 1 200px;
+      border: 1.5px solid var(--line);
+      border-radius: var(--radius-btn);
+      padding: .6rem 1rem;
+      font-size: .9rem;
+      font-family: inherit;
+      background: var(--cream);
+      color: var(--ink);
+      outline: none;
+      transition: border-color var(--transition);
+    }
+
+    .toolbar input[type="search"]:focus-visible {
+      border-color: var(--gold-dark);
+      box-shadow: 0 0 0 3px rgba(206,155,63,.18);
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .45rem;
+    }
+
+    .tag-btn {
+      border: 1.5px solid var(--line);
+      background: rgba(251,247,238,.6);
+      color: var(--ink);
+      font-size: .78rem;
+      font-weight: 600;
+      padding: .35rem .85rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background var(--transition), color var(--transition), border-color var(--transition);
+    }
+
+    .tag-btn:hover {
+      border-color: var(--gold);
+    }
+
+    .tag-btn:focus-visible {
+      outline: 2.5px solid var(--gold-dark);
+      outline-offset: 2px;
+    }
+
+    .tag-btn.active {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: #fff;
+      border-color: transparent;
+    }
+
+    /* === Grid dashboard === */
+    .grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem 3rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      flex: 1;
+    }
+
+    /* === Card === */
+    .card {
+      display: flex;
+      flex-direction: column;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
+      padding: 1.5rem;
+      text-decoration: none;
+      color: inherit;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-card-hover);
+    }
+
+    .card:focus-visible {
+      outline: 2.5px solid var(--gold-dark);
+      outline-offset: 3px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      margin-bottom: .75rem;
+    }
+
+    .card-icon {
+      font-size: 1.6rem;
+      line-height: 1;
+    }
+
+    .card-tag {
+      font-size: .68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--gold-dark);
+      background: rgba(206,155,63,.12);
+      padding: .2rem .6rem;
+      border-radius: 999px;
+    }
+
+    .card-title {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: .4rem;
+      line-height: 1.35;
+    }
+
+    .card-desc {
+      font-size: .84rem;
+      color: #4a5a4e;
+      flex: 1;
+      margin-bottom: 1rem;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .5rem;
+      flex-wrap: wrap;
+    }
+
+    .card-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      background: linear-gradient(135deg, var(--green-deep), var(--green));
+      color: #F6F1E2;
+      font-size: .8rem;
+      font-weight: 600;
+      padding: .55rem 1.1rem;
+      border-radius: var(--radius-btn);
+      pointer-events: none; /* card toàn bộ là link */
+    }
+
+    .card-lock {
+      font-size: .7rem;
+      color: #8a9a8e;
+    }
+
+    /* === Trạng thái rỗng === */
+    .empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3rem 1rem;
+      color: #8a9a8e;
+      font-size: .95rem;
+    }
+
+    /* === Footer === */
+    .footer {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      font-size: .75rem;
+      color: #8a9a8e;
+    }
+
+    /* === Accessibility: giảm chuyển động === */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+
+    /* === Responsive nhỏ === */
+    @media (max-width: 480px) {
+      .header { padding: 2rem 1rem 3.5rem; }
+      .toolbar { margin: -1.5rem .75rem 1.5rem; padding: .8rem; }
+      .grid { padding: 0 .75rem 2rem; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-brand">
+      <svg class="mark" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="50" cy="34" rx="30" ry="6" stroke="currentColor" stroke-width="4"/>
+        <path d="M20,34 Q20,68 50,74 Q80,68 80,34" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M38,10 Q34,20 40,26" stroke="#CE9B3F" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M50,6 Q46,17 52,24" stroke="#CE9B3F" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M62,10 Q58,20 64,26" stroke="#CE9B3F" stroke-width="4" fill="none" stroke-linecap="round"/>
+      </svg>
+      <div class="brand-text">
+        <div class="brand-name">A.Kitchen</div>
+        <div class="brand-sub">Siba Food Vietnam</div>
+      </div>
+    </div>
+    <h1>Cổng Dashboard nội bộ</h1>
+    <p>Chọn một dashboard để xem báo cáo trực quan — mở bằng tài khoản Google được cấp quyền</p>
+  </header>
+
+  <!-- Toolbar: tìm kiếm + tag lọc -->
+  <div class="toolbar">
+    <input type="search" id="searchInput" placeholder="Tìm dashboard…" aria-label="Tìm kiếm dashboard">
+    <div class="tags" id="tagsContainer"></div>
+  </div>
+
+  <!-- Lưới dashboard -->
+  <main class="grid" id="grid"></main>
+
+  <!-- Footer -->
+  <footer class="footer">Nội bộ Siba Food Vietnam · Cập nhật thủ công danh sách trong file này</footer>
+
+  <script>
+    /* =========================================================
+       DỮ LIỆU DASHBOARD
+       ---------------------------------------------------------
+       Để thêm dashboard mới: copy một object bên dưới, đổi các
+       trường name, icon, tag, desc, url cho phù hợp rồi lưu file.
+       ========================================================= */
+    const DASHBOARDS = [
+      {
+        name: "Đánh Giá Chất Lượng Suất Ăn",
+        icon: "🍚",
+        tag: "Chất lượng",
+        desc: "Theo dõi điểm đánh giá theo tiêu chí, mức độ hài lòng và ý kiến khách hàng theo thời gian thực.",
+        url: "https://script.google.com/macros/s/AKfycbxBdDtFJ1iBBOdHbtqMrfyj6515FKkDWTXvUJxIgIIpKJZJHZl176A9OdeMtFNcYeOPig/exec"
+      },
+      {
+        name: "A.Kitchen • Quản trị Check-in — ĐHHV",
+        icon: "🪪",
+        tag: "Vận hành",
+        desc: "Quản lý dữ liệu check-in tại điểm phục vụ Đại Học Hùng Vương.",
+        url: "https://script.google.com/macros/s/AKfycbw_6ymeXz4YqRu0trNQPesvaFxE-GYMzbnLkC4-tRFXDFBO4tkiPpeFdpwkqgzsQJxm/exec"
+      },
+      {
+        name: "A.Kitchen • Dashboard Vận Hành",
+        icon: "📊",
+        tag: "Vận hành",
+        desc: "Tổng quan số liệu vận hành các bếp ăn công nghiệp A.Kitchen.",
+        url: "https://script.google.com/macros/s/AKfycbzrNzaOQv_mnBYiVGcFpfPWbcaKNC9mnmfmiStRoUAQi7ySMp1jAckc7j_ejdYABCGk/exec"
+      },
+      {
+        name: "A.Kitchen • Phân Tích Menu — SH Airport Lounge",
+        icon: "🍽️",
+        tag: "Kinh doanh",
+        desc: "Phân tích hiệu quả thực đơn tại SH Airport Lounge.",
+        url: "https://script.google.com/macros/s/AKfycbxF0GL4K1VC2HpcGvT1r-HWd3mUm_b5rTZTw78nTCzuj7IcvSeLUXZjX0RFqLn9C_fm/exec"
+      }
+    ];
+
+    /* === Phần render & lọc === */
+    const grid = document.getElementById("grid");
+    const searchInput = document.getElementById("searchInput");
+    const tagsContainer = document.getElementById("tagsContainer");
+
+    let activeTag = "Tất cả";
+
+    // Sinh danh sách tag tự động từ dữ liệu
+    function getUniqueTags() {
+      const tags = [...new Set(DASHBOARDS.map(d => d.tag))];
+      return ["Tất cả", ...tags];
+    }
+
+    // Render các nút tag
+    function renderTags() {
+      const tags = getUniqueTags();
+      tagsContainer.innerHTML = tags.map(t =>
+        `<button class="tag-btn${t === activeTag ? ' active' : ''}" data-tag="${t}">${t}</button>`
+      ).join("");
+    }
+
+    // Render lưới card
+    function renderGrid() {
+      const keyword = searchInput.value.trim().toLowerCase();
+      const filtered = DASHBOARDS.filter(d => {
+        const matchTag = activeTag === "Tất cả" || d.tag === activeTag;
+        const matchSearch = !keyword || d.name.toLowerCase().includes(keyword);
+        return matchTag && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="empty">Không tìm thấy dashboard phù hợp.</div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(d => `
+        <a class="card" href="${d.url}" target="_blank" rel="noopener">
+          <div class="card-header">
+            <span class="card-icon">${d.icon}</span>
+            <span class="card-tag">${d.tag}</span>
+          </div>
+          <div class="card-title">${d.name}</div>
+          <div class="card-desc">${d.desc}</div>
+          <div class="card-footer">
+            <span class="card-btn">Mở dashboard ↗</span>
+            <span class="card-lock">🔒 Yêu cầu quyền truy cập Google</span>
+          </div>
+        </a>
+      `).join("");
+    }
+
+    // Sự kiện: bấm tag
+    tagsContainer.addEventListener("click", e => {
+      if (!e.target.classList.contains("tag-btn")) return;
+      activeTag = e.target.dataset.tag;
+      renderTags();
+      renderGrid();
+    });
+
+    // Sự kiện: gõ tìm kiếm
+    searchInput.addEventListener("input", renderGrid);
+
+    // Khởi tạo
+    renderTags();
+    renderGrid();
+  </script>
+</body>
+</html>
