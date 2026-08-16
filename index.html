@@ -597,8 +597,9 @@
             <input type="text" id="inputName" required autocomplete="name" placeholder="Nguyễn Văn A">
           </div>
           <div class="modal-field">
-            <label for="inputEmail">Email <span class="required">*</span></label>
-            <input type="email" id="inputEmail" required autocomplete="email" placeholder="email@company.com">
+            <label for="inputEmail">Gmail cá nhân <span class="required">*</span></label>
+            <input type="email" id="inputEmail" required autocomplete="email" placeholder="yourname@gmail.com">
+            <small style="color:#8a9a8e;font-size:.72rem;margin-top:.2rem;display:block;">Dùng Gmail cá nhân để nhận link truy cập (email công ty có thể bị chặn)</small>
           </div>
           <div class="modal-field">
             <label for="inputDept">Bộ phận</label>
@@ -642,8 +643,9 @@
       if (e.key === "Escape" && modalOverlay.classList.contains("open")) closeModal();
     });
 
+    // Validate email — yêu cầu Gmail cá nhân
     function isValidEmail(email) {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      return /^[^\s@]+@gmail\.com$/i.test(email);
     }
 
     async function handleSubmit(dashboard) {
@@ -671,7 +673,7 @@
       if (!email || !isValidEmail(email)) {
         emailInput.classList.add("invalid");
         emailInput.focus();
-        errorEl.textContent = "Email không hợp lệ.";
+        errorEl.textContent = "Vui lòng nhập đúng Gmail cá nhân (vd: yourname@gmail.com).";
         errorEl.classList.add("show");
         return;
       }
