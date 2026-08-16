@@ -62,9 +62,7 @@
       flex-shrink: 0;
     }
 
-    .header-brand .brand-text {
-      text-align: left;
-    }
+    .header-brand .brand-text { text-align: left; }
 
     .header-brand .brand-name {
       font-family: 'Fraunces', serif;
@@ -95,7 +93,7 @@
       margin: 0 auto;
     }
 
-    /* === Toolbar (nổi đè header) === */
+    /* === Toolbar === */
     .toolbar {
       max-width: 720px;
       margin: -2rem auto 2rem;
@@ -129,11 +127,7 @@
       box-shadow: 0 0 0 3px rgba(206,155,63,.18);
     }
 
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: .45rem;
-    }
+    .tags { display: flex; flex-wrap: wrap; gap: .45rem; }
 
     .tag-btn {
       border: 1.5px solid var(--line);
@@ -148,9 +142,7 @@
       transition: background var(--transition), color var(--transition), border-color var(--transition);
     }
 
-    .tag-btn:hover {
-      border-color: var(--gold);
-    }
+    .tag-btn:hover { border-color: var(--gold); }
 
     .tag-btn:focus-visible {
       outline: 2.5px solid var(--gold-dark);
@@ -163,7 +155,7 @@
       border-color: transparent;
     }
 
-    /* === Grid dashboard === */
+    /* === Grid === */
     .grid {
       max-width: 1200px;
       margin: 0 auto;
@@ -174,7 +166,7 @@
       flex: 1;
     }
 
-    /* === Card (đổi thành button) === */
+    /* === Card === */
     .card {
       display: flex;
       flex-direction: column;
@@ -202,17 +194,8 @@
       outline-offset: 3px;
     }
 
-    .card-header {
-      display: flex;
-      align-items: center;
-      gap: .6rem;
-      margin-bottom: .75rem;
-    }
-
-    .card-icon {
-      font-size: 1.6rem;
-      line-height: 1;
-    }
+    .card-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .75rem; }
+    .card-icon { font-size: 1.6rem; line-height: 1; }
 
     .card-tag {
       font-size: .68rem;
@@ -233,12 +216,7 @@
       line-height: 1.35;
     }
 
-    .card-desc {
-      font-size: .84rem;
-      color: #4a5a4e;
-      flex: 1;
-      margin-bottom: 1rem;
-    }
+    .card-desc { font-size: .84rem; color: #4a5a4e; flex: 1; margin-bottom: 1rem; }
 
     .card-footer {
       display: flex;
@@ -260,19 +238,36 @@
       border-radius: var(--radius-btn);
     }
 
-    .card-lock {
-      font-size: .7rem;
-      color: #8a9a8e;
+    /* Nút cho dashboard công khai */
+    .card-btn.public {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
     }
 
-    /* === Trạng thái rỗng === */
-    .empty {
+    .card-lock { font-size: .7rem; color: #8a9a8e; }
+
+    /* === Loading / Empty === */
+    .loading, .empty, .error-msg {
       grid-column: 1 / -1;
       text-align: center;
       padding: 3rem 1rem;
       color: #8a9a8e;
       font-size: .95rem;
     }
+
+    .error-msg { color: #c0392b; }
+
+    .loading-spinner {
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      border: 3px solid var(--line);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      margin-bottom: .8rem;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     /* === Footer === */
     .footer {
@@ -296,13 +291,8 @@
       transition: opacity var(--transition);
     }
 
-    .modal-overlay.open {
-      display: flex;
-    }
-
-    .modal-overlay.visible {
-      opacity: 1;
-    }
+    .modal-overlay.open { display: flex; }
+    .modal-overlay.visible { opacity: 1; }
 
     .modal {
       background: var(--paper);
@@ -317,9 +307,7 @@
       transition: transform var(--transition);
     }
 
-    .modal-overlay.visible .modal {
-      transform: scale(1) translateY(0);
-    }
+    .modal-overlay.visible .modal { transform: scale(1) translateY(0); }
 
     .modal-title {
       font-family: 'Fraunces', serif;
@@ -340,10 +328,7 @@
       color: var(--ink);
     }
 
-    .modal-field label .required {
-      color: #c0392b;
-      margin-left: .15rem;
-    }
+    .modal-field label .required { color: #c0392b; margin-left: .15rem; }
 
     .modal-field input {
       width: 100%;
@@ -363,15 +348,9 @@
       box-shadow: 0 0 0 3px rgba(206,155,63,.18);
     }
 
-    .modal-field input.invalid {
-      border-color: #c0392b;
-    }
+    .modal-field input.invalid { border-color: #c0392b; }
 
-    .modal-actions {
-      display: flex;
-      gap: .6rem;
-      margin-top: .5rem;
-    }
+    .modal-actions { display: flex; gap: .6rem; margin-top: .5rem; }
 
     .btn-submit {
       flex: 1;
@@ -388,16 +367,8 @@
     }
 
     .btn-submit:hover { opacity: .9; }
-
-    .btn-submit:focus-visible {
-      outline: 2.5px solid var(--gold-dark);
-      outline-offset: 2px;
-    }
-
-    .btn-submit:disabled {
-      opacity: .6;
-      cursor: not-allowed;
-    }
+    .btn-submit:focus-visible { outline: 2.5px solid var(--gold-dark); outline-offset: 2px; }
+    .btn-submit:disabled { opacity: .6; cursor: not-allowed; }
 
     .btn-cancel {
       border: 1.5px solid var(--line);
@@ -413,48 +384,21 @@
     }
 
     .btn-cancel:hover { border-color: var(--gold); }
+    .btn-cancel:focus-visible { outline: 2.5px solid var(--gold-dark); outline-offset: 2px; }
 
-    .btn-cancel:focus-visible {
-      outline: 2.5px solid var(--gold-dark);
-      outline-offset: 2px;
-    }
-
-    .modal-error {
-      font-size: .8rem;
-      color: #c0392b;
-      font-weight: 500;
-      display: none;
-    }
-
+    .modal-error { font-size: .8rem; color: #c0392b; font-weight: 500; display: none; }
     .modal-error.show { display: block; }
 
-    /* Trạng thái thành công trong modal */
-    .modal-success {
-      text-align: center;
-      padding: 1rem 0;
-    }
-
-    .modal-success .success-icon {
-      font-size: 2.5rem;
-      margin-bottom: .8rem;
-    }
-
-    .modal-success p {
-      font-size: .9rem;
-      color: var(--ink);
-      line-height: 1.6;
-      margin-bottom: 1.2rem;
-    }
+    .modal-success { text-align: center; padding: 1rem 0; }
+    .modal-success .success-icon { font-size: 2.5rem; margin-bottom: .8rem; }
+    .modal-success p { font-size: .9rem; color: var(--ink); line-height: 1.6; margin-bottom: 1.2rem; }
 
     /* === Accessibility: giảm chuyển động === */
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        transition: none !important;
-        animation: none !important;
-      }
+      *, *::before, *::after { transition: none !important; animation: none !important; }
     }
 
-    /* === Responsive nhỏ === */
+    /* === Responsive === */
     @media (max-width: 480px) {
       .header { padding: 2rem 1rem 3.5rem; }
       .toolbar { margin: -1.5rem .75rem 1.5rem; padding: .8rem; }
@@ -485,20 +429,23 @@
     <p>Chọn một dashboard để xem báo cáo trực quan — mở bằng tài khoản Google được cấp quyền</p>
   </header>
 
-  <!-- Toolbar: tìm kiếm + tag lọc -->
+  <!-- Toolbar -->
   <div class="toolbar">
     <input type="search" id="searchInput" placeholder="Tìm dashboard…" aria-label="Tìm kiếm dashboard">
     <div class="tags" id="tagsContainer"></div>
   </div>
 
   <!-- Lưới dashboard -->
-  <main class="grid" id="grid"></main>
+  <main class="grid" id="grid">
+    <div class="loading">
+      <div class="loading-spinner"></div>
+      <div>Đang tải danh sách dashboard...</div>
+    </div>
+  </main>
 
   <!-- Modal xin quyền truy cập -->
   <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal" id="modalContent">
-      <!-- Nội dung được render bằng JS -->
-    </div>
+    <div class="modal" id="modalContent"></div>
   </div>
 
   <!-- Footer -->
@@ -506,52 +453,23 @@
 
   <script>
     /* =========================================================
-       CẤU HÌNH GATEKEEPER
+       CẤU HÌNH
        ---------------------------------------------------------
-       Sau khi deploy Apps Script Gatekeeper (Phần A), paste URL
-       /exec vào đây. Portal sẽ gọi POST đến URL này khi user
-       submit form xin quyền truy cập.
+       GATEKEEPER_URL: URL deploy của Apps Script Gatekeeper.
+       Portal gọi GET để lấy danh sách dashboard,
+       gọi POST để gửi yêu cầu xin quyền truy cập.
        ========================================================= */
     const GATEKEEPER_URL = "https://script.google.com/macros/s/AKfycbx4rzDP4ore6ucJaTsGTs5-JKWH6500lB3fS4KPUCinnGTkq5ExrEaiXpUZFv7L8dsN/exec";
 
     /* =========================================================
-       DỮ LIỆU DASHBOARD
+       DỮ LIỆU DASHBOARD — Load động từ Google Sheet
        ---------------------------------------------------------
-       Để thêm dashboard mới: copy một object bên dưới, đổi các
-       trường name, icon, tag, desc, url cho phù hợp rồi lưu file.
+       Mảng DASHBOARDS sẽ được điền tự động khi trang load.
+       Mỗi object có: name, icon, tag, desc, url, requireAccess
        ========================================================= */
-    const DASHBOARDS = [
-      {
-        name: "Đánh Giá Chất Lượng Suất Ăn",
-        icon: "🍚",
-        tag: "Chất lượng",
-        desc: "Theo dõi điểm đánh giá theo tiêu chí, mức độ hài lòng và ý kiến khách hàng theo thời gian thực.",
-        url: "https://script.google.com/macros/s/AKfycbxBdDtFJ1iBBOdHbtqMrfyj6515FKkDWTXvUJxIgIIpKJZJHZl176A9OdeMtFNcYeOPig/exec"
-      },
-      {
-        name: "A.Kitchen • Quản trị Check-in — ĐHHV",
-        icon: "🪪",
-        tag: "Vận hành",
-        desc: "Quản lý dữ liệu check-in tại điểm phục vụ Đại Học Hùng Vương.",
-        url: "https://script.google.com/macros/s/AKfycbw_6ymeXz4YqRu0trNQPesvaFxE-GYMzbnLkC4-tRFXDFBO4tkiPpeFdpwkqgzsQJxm/exec"
-      },
-      {
-        name: "A.Kitchen • Dashboard Vận Hành",
-        icon: "📊",
-        tag: "Vận hành",
-        desc: "Tổng quan số liệu vận hành các bếp ăn công nghiệp A.Kitchen.",
-        url: "https://script.google.com/macros/s/AKfycbzrNzaOQv_mnBYiVGcFpfPWbcaKNC9mnmfmiStRoUAQi7ySMp1jAckc7j_ejdYABCGk/exec"
-      },
-      {
-        name: "A.Kitchen • Phân Tích Menu — SH Airport Lounge",
-        icon: "🍽️",
-        tag: "Kinh doanh",
-        desc: "Phân tích hiệu quả thực đơn tại SH Airport Lounge.",
-        url: "https://script.google.com/macros/s/AKfycbxF0GL4K1VC2HpcGvT1r-HWd3mUm_b5rTZTw78nTCzuj7IcvSeLUXZjX0RFqLn9C_fm/exec"
-      }
-    ];
+    let DASHBOARDS = [];
 
-    /* === Phần render & lọc === */
+    /* === DOM Elements === */
     const grid = document.getElementById("grid");
     const searchInput = document.getElementById("searchInput");
     const tagsContainer = document.getElementById("tagsContainer");
@@ -560,13 +478,34 @@
 
     let activeTag = "Tất cả";
 
-    // Sinh danh sách tag tự động từ dữ liệu
+    /* === Load danh sách dashboard từ API === */
+    async function loadDashboards() {
+      try {
+        const res = await fetch(GATEKEEPER_URL);
+        const json = await res.json();
+
+        if (json.success && Array.isArray(json.data)) {
+          DASHBOARDS = json.data;
+        } else {
+          grid.innerHTML = `<div class="error-msg">Không tải được danh sách dashboard.<br><small>${json.message || ''}</small></div>`;
+          return;
+        }
+      } catch (err) {
+        grid.innerHTML = `<div class="error-msg">Lỗi kết nối. Vui lòng tải lại trang.<br><small>${err.message}</small></div>`;
+        return;
+      }
+
+      // Render sau khi load xong
+      renderTags();
+      renderGrid();
+    }
+
+    /* === Render tags === */
     function getUniqueTags() {
       const tags = [...new Set(DASHBOARDS.map(d => d.tag))];
       return ["Tất cả", ...tags];
     }
 
-    // Render các nút tag
     function renderTags() {
       const tags = getUniqueTags();
       tagsContainer.innerHTML = tags.map(t =>
@@ -574,7 +513,7 @@
       ).join("");
     }
 
-    // Render lưới card — dùng <button> thay vì <a>
+    /* === Render grid cards === */
     function renderGrid() {
       const keyword = searchInput.value.trim().toLowerCase();
       const filtered = DASHBOARDS.filter(d => {
@@ -588,23 +527,43 @@
         return;
       }
 
-      grid.innerHTML = filtered.map((d, i) => `
-        <button class="card" type="button" data-index="${DASHBOARDS.indexOf(d)}">
-          <div class="card-header">
-            <span class="card-icon">${d.icon}</span>
-            <span class="card-tag">${d.tag}</span>
-          </div>
-          <div class="card-title">${d.name}</div>
-          <div class="card-desc">${d.desc}</div>
-          <div class="card-footer">
-            <span class="card-btn">Yêu cầu truy cập</span>
-            <span class="card-lock">🔒 Yêu cầu quyền truy cập Google</span>
-          </div>
-        </button>
-      `).join("");
+      grid.innerHTML = filtered.map((d, i) => {
+        const idx = DASHBOARDS.indexOf(d);
+        if (d.requireAccess) {
+          // Dashboard cần xin quyền → button mở modal
+          return `
+            <button class="card" type="button" data-index="${idx}">
+              <div class="card-header">
+                <span class="card-icon">${d.icon}</span>
+                <span class="card-tag">${d.tag}</span>
+              </div>
+              <div class="card-title">${d.name}</div>
+              <div class="card-desc">${d.desc}</div>
+              <div class="card-footer">
+                <span class="card-btn">Yêu cầu truy cập</span>
+                <span class="card-lock">🔒 Cần quyền truy cập</span>
+              </div>
+            </button>`;
+        } else {
+          // Dashboard công khai → link mở thẳng
+          return `
+            <a class="card" href="${d.url}" target="_blank" rel="noopener" data-index="${idx}">
+              <div class="card-header">
+                <span class="card-icon">${d.icon}</span>
+                <span class="card-tag">${d.tag}</span>
+              </div>
+              <div class="card-title">${d.name}</div>
+              <div class="card-desc">${d.desc}</div>
+              <div class="card-footer">
+                <span class="card-btn public">Mở dashboard ↗</span>
+                <span class="card-lock">🌐 Truy cập tự do</span>
+              </div>
+            </a>`;
+        }
+      }).join("");
     }
 
-    // Sự kiện: bấm tag
+    /* === Sự kiện: tag === */
     tagsContainer.addEventListener("click", e => {
       if (!e.target.classList.contains("tag-btn")) return;
       activeTag = e.target.dataset.tag;
@@ -612,25 +571,24 @@
       renderGrid();
     });
 
-    // Sự kiện: gõ tìm kiếm
+    /* === Sự kiện: tìm kiếm === */
     searchInput.addEventListener("input", renderGrid);
 
-    // Sự kiện: bấm card → mở modal
+    /* === Sự kiện: bấm card cần quyền → mở modal === */
     grid.addEventListener("click", e => {
-      const card = e.target.closest(".card");
+      const card = e.target.closest("button.card");
       if (!card) return;
       const idx = parseInt(card.dataset.index, 10);
       const dashboard = DASHBOARDS[idx];
-      if (dashboard) openModal(dashboard);
+      if (dashboard && dashboard.requireAccess) openModal(dashboard);
     });
 
-    /* === Modal xin quyền truy cập === */
+    /* === Modal === */
     let lastFocusedElement = null;
 
     function openModal(dashboard) {
       lastFocusedElement = document.activeElement;
 
-      // Render form
       modalContent.innerHTML = `
         <h2 class="modal-title" id="modalTitle">Yêu cầu truy cập: ${dashboard.name}</h2>
         <form class="modal-form" id="accessForm" novalidate>
@@ -654,25 +612,16 @@
         </form>
       `;
 
-      // Hiện modal
       modalOverlay.classList.add("open");
-      requestAnimationFrame(() => {
-        modalOverlay.classList.add("visible");
-      });
+      requestAnimationFrame(() => modalOverlay.classList.add("visible"));
 
-      // Focus vào ô đầu tiên
-      setTimeout(() => {
-        document.getElementById("inputName").focus();
-      }, 50);
+      setTimeout(() => document.getElementById("inputName").focus(), 50);
 
-      // Xử lý submit
-      const form = document.getElementById("accessForm");
-      form.addEventListener("submit", e => {
+      document.getElementById("accessForm").addEventListener("submit", e => {
         e.preventDefault();
         handleSubmit(dashboard);
       });
 
-      // Nút Huỷ
       document.getElementById("btnCancel").addEventListener("click", closeModal);
     }
 
@@ -685,24 +634,18 @@
       if (lastFocusedElement) lastFocusedElement.focus();
     }
 
-    // Đóng modal khi bấm overlay
     modalOverlay.addEventListener("click", e => {
       if (e.target === modalOverlay) closeModal();
     });
 
-    // Đóng modal khi bấm Esc
     document.addEventListener("keydown", e => {
-      if (e.key === "Escape" && modalOverlay.classList.contains("open")) {
-        closeModal();
-      }
+      if (e.key === "Escape" && modalOverlay.classList.contains("open")) closeModal();
     });
 
-    // Validate email đơn giản
     function isValidEmail(email) {
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
 
-    // Xử lý gửi form
     async function handleSubmit(dashboard) {
       const nameInput = document.getElementById("inputName");
       const emailInput = document.getElementById("inputEmail");
@@ -710,7 +653,6 @@
       const errorEl = document.getElementById("modalError");
       const btnSubmit = document.getElementById("btnSubmit");
 
-      // Reset trạng thái lỗi
       nameInput.classList.remove("invalid");
       emailInput.classList.remove("invalid");
       errorEl.classList.remove("show");
@@ -719,7 +661,6 @@
       const email = emailInput.value.trim();
       const dept = deptInput.value.trim();
 
-      // Validate
       if (!name) {
         nameInput.classList.add("invalid");
         nameInput.focus();
@@ -735,12 +676,10 @@
         return;
       }
 
-      // Disable nút, đổi text
       btnSubmit.disabled = true;
       btnSubmit.textContent = "Đang gửi...";
 
       try {
-        // Gửi POST — dùng Content-Type text/plain để né preflight CORS
         const res = await fetch(GATEKEEPER_URL, {
           method: "POST",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -753,18 +692,11 @@
           })
         });
 
-        // Apps Script redirect 302 → fetch sẽ follow tự động
-        // Nếu response ok, parse JSON
         let result;
-        try {
-          result = await res.json();
-        } catch (_) {
-          // Nếu không parse được JSON nhưng status ok → coi như thành công
-          result = { success: true };
-        }
+        try { result = await res.json(); }
+        catch (_) { result = { success: true }; }
 
         if (result.success !== false) {
-          // Hiện thông báo thành công
           modalContent.innerHTML = `
             <div class="modal-success">
               <div class="success-icon">✅</div>
@@ -773,15 +705,12 @@
             </div>
           `;
         } else {
-          // Server trả lỗi logic
           errorEl.textContent = result.message || "Gửi yêu cầu thất bại, vui lòng thử lại.";
           errorEl.classList.add("show");
           btnSubmit.disabled = false;
           btnSubmit.textContent = "Gửi yêu cầu";
         }
-
       } catch (err) {
-        // Lỗi mạng / fetch fail
         errorEl.textContent = "Gửi yêu cầu thất bại, vui lòng thử lại.";
         errorEl.classList.add("show");
         btnSubmit.disabled = false;
@@ -789,9 +718,8 @@
       }
     }
 
-    // Khởi tạo
-    renderTags();
-    renderGrid();
+    /* === Khởi tạo: load dashboard từ API === */
+    loadDashboards();
   </script>
 </body>
 </html>
