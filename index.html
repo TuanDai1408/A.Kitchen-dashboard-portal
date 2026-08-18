@@ -747,12 +747,29 @@
     }
 
     // Hiện portal sau khi xác thực thành công
-    function showPortal(session) {
+    // Luôn gọi lại server để lấy danh sách quyền mới nhất (real-time)
+    async function showPortal(session) {
       document.getElementById('loginOverlay').classList.add('hidden');
       document.getElementById('userBar').style.display = 'flex';
       document.getElementById('userEmail').textContent = session.email;
-      // Load TẤT CẢ dashboards — không filter theo quyền ở portal
-      // Phân quyền chỉ kiểm tra khi user click vào dashboard cụ thể
+
+      // Gọi lại checkAuth với token hiện có để refresh danh sách quyền từ sheet
+      try {
+        const res = await fetch(AUTH_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'refreshPermissions', sessionToken: session.token })
+        });
+        const result = await res.json();
+        if (result.success && Array.isArray(result.allowedDashboards)) {
+          session.dashboards = result.allowedDashboards;
+          localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+        }
+      } catch (err) {
+        console.log('refreshPermissions error (dùng cache cũ):', err);
+      }
+
+      // Load dashboards với session đã cập nhật quyền
       loadDashboards(session);
     }
 
