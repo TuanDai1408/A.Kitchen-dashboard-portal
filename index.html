@@ -733,7 +733,7 @@
         const session = {
           token: result.sessionToken,
           email: result.email,
-          dashboards: result.allowedDashboards,
+          dashboards: result.allowedDashboards || [],
           expiresAt: result.expiresAt
         };
         localStorage.setItem(SESSION_KEY, JSON.stringify(session));
@@ -751,14 +751,35 @@
       document.getElementById('loginOverlay').classList.add('hidden');
       document.getElementById('userBar').style.display = 'flex';
       document.getElementById('userEmail').textContent = session.email;
-      // Load dashboards - truyền session để filter theo quyền
+      // Load TẤT CẢ dashboards — không filter theo quyền ở portal
+      // Phân quyền chỉ kiểm tra khi user click vào dashboard cụ thể
       loadDashboards(session);
     }
 
-    // Đăng xuất
+    // Đăng xuất — hiện lại form đăng nhập ngay (không reload trang)
     function logout() {
       localStorage.removeItem(SESSION_KEY);
-      location.reload();
+      // Ẩn user bar, hiện login overlay
+      document.getElementById('userBar').style.display = 'none';
+      document.getElementById('loginOverlay').classList.remove('hidden');
+      // Xóa nội dung grid
+      grid.innerHTML = '';
+      // Render lại nút đăng nhập Google
+      document.getElementById('googleSignInBtn').innerHTML = '';
+      _waitForGIS(function() {
+        try {
+          google.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID,
+            callback: handleGoogleLogin
+          });
+          google.accounts.id.renderButton(
+            document.getElementById('googleSignInBtn'),
+            { theme: 'outline', size: 'large', width: 300, text: 'signin_with', locale: 'vi' }
+          );
+        } catch (err) {
+          console.log('Re-render GIS button error:', err);
+        }
+      });
     }
 
     /* =========================================================
@@ -782,10 +803,8 @@
         return;
       }
 
-      // Lọc dashboard theo quyền nếu có session
-      if (session && Array.isArray(session.dashboards) && session.dashboards.length > 0) {
-        DASHBOARDS = DASHBOARDS.filter(d => session.dashboards.includes(d.name));
-      }
+      // Hiển thị TẤT CẢ dashboard — phân quyền chỉ kiểm tra khi user click vào
+      // (không filter theo session.dashboards ở portal)
 
       // Render sau khi load xong
       renderTags();
