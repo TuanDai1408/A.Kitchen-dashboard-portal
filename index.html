@@ -853,8 +853,12 @@
           dashUrl += separator + 'token=' + currentSession.token + '&email=' + encodeURIComponent(currentSession.email);
         }
 
-        if (d.requireAccess) {
-          // Dashboard cần xin quyền → button mở modal
+        // Kiểm tra user đã có quyền chưa (tên dashboard nằm trong allowedDashboards)
+        const hasPermission = currentSession && Array.isArray(currentSession.dashboards) &&
+          currentSession.dashboards.some(name => name.toLowerCase() === d.name.toLowerCase());
+
+        if (d.requireAccess && !hasPermission) {
+          // Dashboard cần xin quyền VÀ user CHƯA có quyền → button mở modal
           return `
             <button class="card" type="button" data-index="${idx}">
               <div class="card-header">
@@ -869,7 +873,7 @@
               </div>
             </button>`;
         } else {
-          // Dashboard được phép → link mở thẳng (có token)
+          // Dashboard công khai HOẶC user ĐÃ CÓ QUYỀN → link mở thẳng (có token)
           return `
             <a class="card" href="${dashUrl}" target="_blank" rel="noopener" data-index="${idx}">
               <div class="card-header">
@@ -880,7 +884,7 @@
               <div class="card-desc">${d.desc}</div>
               <div class="card-footer">
                 <span class="card-btn public">Mở dashboard ↗</span>
-                <span class="card-lock">🌐 Truy cập tự do</span>
+                <span class="card-lock">${d.requireAccess ? '✅ Đã cấp quyền' : '🌐 Truy cập tự do'}</span>
               </div>
             </a>`;
         }
