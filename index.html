@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Cổng Dashboard — A.Kitchen Siba Food Vietnam</title>
-  <link rel="icon" type="image/jpeg" href="logo_akitchen.jpg">
+  <link rel="icon" type="image/png" href="logo_akitchen-removebg-preview.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
@@ -673,15 +673,41 @@
     // Hiện form login
     function showLogin() {
       document.getElementById('loginOverlay').classList.remove('hidden');
-      // Render nút Google Sign-In
-      google.accounts.id.initialize({
-        client_id: GOOGLE_CLIENT_ID,
-        callback: handleGoogleLogin
+      // Chờ Google Identity Services load xong rồi render nút
+      _waitForGIS(function() {
+        try {
+          google.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID,
+            callback: handleGoogleLogin
+          });
+          google.accounts.id.renderButton(
+            document.getElementById('googleSignInBtn'),
+            { theme: 'outline', size: 'large', width: 300, text: 'signin_with', locale: 'vi' }
+          );
+        } catch (err) {
+          console.log('GIS render error:', err);
+          // Fallback: hiện thông báo lỗi
+          document.getElementById('googleSignInBtn').innerHTML =
+            '<p style="color:#c0392b;font-size:.85rem;">Không tải được nút đăng nhập Google.<br>Kiểm tra lại Client ID hoặc kết nối mạng.</p>';
+        }
       });
-      google.accounts.id.renderButton(
-        document.getElementById('googleSignInBtn'),
-        { theme: 'outline', size: 'large', width: 300, text: 'signin_with', locale: 'vi' }
-      );
+    }
+
+    // Chờ google.accounts.id sẵn sàng (GIS script load async)
+    function _waitForGIS(callback, attempts) {
+      attempts = attempts || 0;
+      if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
+        callback();
+      } else if (attempts < 50) {
+        // Retry mỗi 100ms, tối đa 5 giây
+        setTimeout(function() { _waitForGIS(callback, attempts + 1); }, 100);
+      } else {
+        // Timeout: hiện nút fallback
+        console.log('Google Identity Services không load được sau 5 giây');
+        document.getElementById('googleSignInBtn').innerHTML =
+          '<p style="color:#c0392b;font-size:.85rem;">Không tải được Google Sign-In.<br>Vui lòng tải lại trang (F5).</p>' +
+          '<button onclick="location.reload()" style="margin-top:12px;padding:10px 24px;border:1.5px solid #E6DFC9;border-radius:10px;background:#FBF7EE;cursor:pointer;font-family:inherit;font-weight:600;">↻ Tải lại trang</button>';
+      }
     }
 
     // Callback sau khi user đăng nhập Google thành công
