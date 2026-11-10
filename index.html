@@ -5,10 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Cổng Dashboard — A.Kitchen Siba Food Vietnam</title>
   <link rel="icon" type="image/png" href="logo_akitchen-removebg-preview.png">
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link rel="dns-prefetch" href="https://script.google.com">
+  <link rel="dns-prefetch" href="https://script.googleusercontent.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;700&display=swap" rel="stylesheet">
+  <script src="https://accounts.google.com/gsi/client" async defer onload="window.gisReady=true;if(window._gisInit)window._gisInit()"></script>
   <style>
     /* === Biến màu chính === */
     :root {
@@ -565,7 +569,7 @@
   <!-- Login Overlay — hiển thị mặc định, ẩn sau khi xác thực -->
   <div id="loginOverlay" class="login-overlay">
     <div class="login-card">
-      <img src="logo_akitchen_2.jpg" alt="A.Kitchen" class="login-logo">
+      <img src="logo_akitchen_2.jpg" alt="A.Kitchen" class="login-logo" width="64" height="64" decoding="async">
       <h2>Cổng Dashboard Nội Bộ</h2>
       <p>Đăng nhập bằng tài khoản Google được cấp quyền</p>
       <div id="googleSignInBtn"></div>
@@ -576,7 +580,7 @@
   <!-- Header -->
   <header class="header">
     <div class="header-brand">
-      <img class="mark" src="logo_akitchen_2.jpg" alt="A.Kitchen">
+      <img class="mark" src="logo_akitchen_2.jpg" alt="A.Kitchen" width="48" height="48" decoding="async">
       <div class="brand-text">
         <div class="brand-name">A.Kitchen</div>
         <div class="brand-sub">Siba Food Vietnam</div>
@@ -622,11 +626,30 @@
     const AUTH_API_URL = GATEKEEPER_URL; // Cùng endpoint, routing theo action trong doPost
     const GOOGLE_CLIENT_ID = "241889016372-b7klaa5uff117fck5tl4ajj39ukvfftr.apps.googleusercontent.com"; // ← Client ID từ Google Cloud Console
     const SESSION_KEY = "portal_session";
+    const DASHBOARDS_CACHE_KEY = "portal_dashboards_cache";
 
     /* =========================================================
-       DỮ LIỆU DASHBOARD — Load động từ Google Sheet
+       DỮ LIỆU DASHBOARD — Load động từ Google Sheet + Local Cache
        ========================================================= */
     let DASHBOARDS = [];
+
+    // Helper quản lý Cache Dashboards (Stale-While-Revalidate)
+    function getCachedDashboards() {
+      try {
+        const raw = localStorage.getItem(DASHBOARDS_CACHE_KEY);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : (parsed.data || null);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function setCachedDashboards(data) {
+      try {
+        localStorage.setItem(DASHBOARDS_CACHE_KEY, JSON.stringify(data));
+      } catch (e) {}
+    }
 
     /* === DOM Elements === */
     const grid = document.getElementById("grid");
@@ -695,15 +718,16 @@
 
     // Chờ google.accounts.id sẵn sàng (GIS script load async)
     function _waitForGIS(callback, attempts) {
-      attempts = attempts || 0;
       if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
         callback();
-      } else if (attempts < 50) {
-        // Retry mỗi 100ms, tối đa 5 giây
+        return;
+      }
+      window._gisInit = callback;
+      attempts = attempts || 0;
+      if (attempts < 30) {
         setTimeout(function() { _waitForGIS(callback, attempts + 1); }, 100);
       } else {
-        // Timeout: hiện nút fallback
-        console.log('Google Identity Services không load được sau 5 giây');
+        console.log('Google Identity Services không load được sau 3 giây');
         document.getElementById('googleSignInBtn').innerHTML =
           '<p style="color:#c0392b;font-size:.85rem;">Không tải được Google Sign-In.<br>Vui lòng tải lại trang (F5).</p>' +
           '<button onclick="location.reload()" style="margin-top:12px;padding:10px 24px;border:1.5px solid #E6DFC9;border-radius:10px;background:#FBF7EE;cursor:pointer;font-family:inherit;font-weight:600;">↻ Tải lại trang</button>';
@@ -737,7 +761,7 @@
           expiresAt: result.expiresAt
         };
         localStorage.setItem(SESSION_KEY, JSON.stringify(session));
-        showPortal(session);
+        showPortal(session, true); // skipPermissionRefresh = true vì checkAuth đã vừa trả về danh sách quyền mới nhất
 
       } catch (err) {
         errEl.textContent = 'Lỗi kết nối: ' + err.message;
@@ -747,13 +771,31 @@
     }
 
     // Hiện portal sau khi xác thực thành công
-    // Luôn gọi lại server để lấy danh sách quyền mới nhất (real-time)
-    async function showPortal(session) {
+    // Áp dụng Stale-While-Revalidate: render cache ngay lập tức, refresh dữ liệu và quyền ngầm
+    async function showPortal(session, skipPermissionRefresh = false) {
       document.getElementById('loginOverlay').classList.add('hidden');
       document.getElementById('userBar').style.display = 'flex';
       document.getElementById('userEmail').textContent = session.email;
 
-      // Gọi lại checkAuth với token hiện có để refresh danh sách quyền từ sheet
+      // 1. HIỂN THỊ TỨC THÌ TỪ CACHE (Instant Display - 0 delay)
+      const cached = getCachedDashboards();
+      if (cached && cached.length > 0) {
+        DASHBOARDS = cached;
+        renderTags();
+        renderGrid(session);
+      }
+
+      // 2. CHẠY NGẦM SONG SONG: Làm mới danh sách Dashboards và Permissions
+      const tasks = [fetchDashboards(session)];
+      if (!skipPermissionRefresh) {
+        tasks.push(refreshPermissions(session));
+      }
+
+      await Promise.allSettled(tasks);
+    }
+
+    // Làm mới quyền truy cập dưới nền
+    async function refreshPermissions(session) {
       try {
         const res = await fetch(AUTH_API_URL, {
           method: 'POST',
@@ -762,20 +804,25 @@
         });
         const result = await res.json();
         if (result.success && Array.isArray(result.allowedDashboards)) {
+          const oldDashboards = JSON.stringify(session.dashboards || []);
+          const newDashboards = JSON.stringify(result.allowedDashboards);
           session.dashboards = result.allowedDashboards;
           localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+
+          // Nếu có thay đổi quyền mới, re-render lại grid
+          if (oldDashboards !== newDashboards) {
+            renderGrid(session);
+          }
         }
       } catch (err) {
         console.log('refreshPermissions error (dùng cache cũ):', err);
       }
-
-      // Load dashboards với session đã cập nhật quyền
-      loadDashboards(session);
     }
 
     // Đăng xuất — hiện lại form đăng nhập ngay (không reload trang)
     function logout() {
       localStorage.removeItem(SESSION_KEY);
+      currentSession = null;
       // Ẩn user bar, hiện login overlay
       document.getElementById('userBar').style.display = 'none';
       document.getElementById('loginOverlay').classList.remove('hidden');
@@ -803,30 +850,36 @@
        DASHBOARD FUNCTIONS
        ========================================================= */
 
-    // === Load danh sách dashboard từ API ===
-    async function loadDashboards(session) {
+    // === Tải danh sách dashboard (chạy song song và cập nhật cache) ===
+    async function fetchDashboards(session) {
       try {
         const res = await fetch(GATEKEEPER_URL);
         const json = await res.json();
 
         if (json.success && Array.isArray(json.data)) {
+          const isChanged = JSON.stringify(DASHBOARDS) !== JSON.stringify(json.data);
           DASHBOARDS = json.data;
-        } else {
+          setCachedDashboards(DASHBOARDS);
+
+          // Cập nhật lại giao diện nếu dữ liệu có thay đổi hoặc chưa có card nào được render
+          if (isChanged || !grid.querySelector('.card')) {
+            renderTags();
+            renderGrid(session);
+          }
+        } else if (!DASHBOARDS.length) {
           grid.innerHTML = `<div class="error-msg">Không tải được danh sách dashboard.<br><small>${json.message || ''}</small></div>`;
           return;
         }
       } catch (err) {
-        grid.innerHTML = `<div class="error-msg">Lỗi kết nối. Vui lòng tải lại trang.<br><small>${err.message}</small></div>`;
-        return;
+        if (!DASHBOARDS.length) {
+          grid.innerHTML = `<div class="error-msg">Lỗi kết nối. Vui lòng tải lại trang.<br><small>${err.message}</small></div>`;
+          return;
+        }
       }
-
-      // Hiển thị TẤT CẢ dashboard — phân quyền chỉ kiểm tra khi user click vào
-      // (không filter theo session.dashboards ở portal)
-
-      // Render sau khi load xong
-      renderTags();
-      renderGrid(session);
     }
+
+    // Alias hỗ trợ tương thích
+    const loadDashboards = fetchDashboards;
 
     /* === Render tags === */
     function getUniqueTags() {
