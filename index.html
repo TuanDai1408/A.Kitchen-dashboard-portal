@@ -11,7 +11,7 @@
   <link rel="dns-prefetch" href="https://script.googleusercontent.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <script src="https://accounts.google.com/gsi/client" async defer onload="window.gisReady=true;if(window._gisInit)window._gisInit()"></script>
   <style>
     /* === Biến màu chính === */
@@ -35,7 +35,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Be Vietnam Pro', sans-serif;
+      font-family: 'Roboto', sans-serif;
       background: var(--cream);
       color: var(--ink);
       line-height: 1.6;
@@ -49,7 +49,7 @@
     .login-overlay.hidden { display:none; }
     .login-card { background:var(--paper); border-radius:var(--radius-card); padding:48px 40px; text-align:center; box-shadow:var(--shadow-card); max-width:400px; width:90%; }
     .login-logo { height:64px; margin-bottom:20px; border-radius:12px; }
-    .login-card h2 { font-family:var(--font-heading,'Fraunces',serif); color:var(--green-deep); font-size:1.4rem; margin-bottom:8px; }
+    .login-card h2 { font-family: inherit; font-weight: 700; color:var(--green-deep); font-size:1.4rem; margin-bottom:8px; }
     .login-card p { color:var(--ink); font-size:.9rem; opacity:.7; margin-bottom:24px; }
     .login-error { color:#c0392b; font-size:.85rem; margin-top:16px; display:none; }
     .login-error.show { display:block; }
@@ -88,7 +88,7 @@
     .header-brand .brand-text { text-align: left; }
 
     .header-brand .brand-name {
-      font-family: 'Fraunces', serif;
+      font-family: inherit;
       font-weight: 700;
       font-size: 1.35rem;
       line-height: 1.2;
@@ -103,8 +103,8 @@
     }
 
     .header h1 {
-      font-family: 'Fraunces', serif;
-      font-weight: 600;
+      font-family: inherit;
+      font-weight: 700;
       font-size: clamp(1.5rem, 4vw, 2.1rem);
       margin-bottom: .5rem;
     }
@@ -232,8 +232,8 @@
     }
 
     .card-title {
-      font-family: 'Fraunces', serif;
-      font-weight: 600;
+      font-family: inherit;
+      font-weight: 700;
       font-size: 1.05rem;
       margin-bottom: .4rem;
       line-height: 1.35;
@@ -333,8 +333,8 @@
     .modal-overlay.visible .modal { transform: scale(1) translateY(0); }
 
     .modal-title {
-      font-family: 'Fraunces', serif;
-      font-weight: 600;
+      font-family: inherit;
+      font-weight: 700;
       font-size: 1.15rem;
       margin-bottom: 1.2rem;
       color: var(--ink);
