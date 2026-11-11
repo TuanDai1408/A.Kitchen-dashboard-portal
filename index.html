@@ -61,7 +61,7 @@
     .login-overlay { position:fixed; inset:0; background:var(--cream); display:flex; align-items:center; justify-content:center; z-index:2000; }
     .login-overlay.hidden { display:none; }
     .login-card { background:var(--paper); border-radius:var(--radius-card); padding:48px 40px; text-align:center; box-shadow:var(--shadow-card); max-width:400px; width:90%; }
-    .login-logo { height:64px; margin-bottom:20px; border-radius:12px; }
+    .login-logo { height: 56px; width: auto; max-width: 220px; object-fit: contain; margin-bottom: 20px; border-radius: 8px; }
     .login-card h2 { font-family: inherit; font-weight: 700; color:var(--green-deep); font-size:1.4rem; margin-bottom:8px; }
     .login-card p { color:var(--ink); font-size:.9rem; opacity:.7; margin-bottom:24px; }
     .login-error { color:#c0392b; font-size:.85rem; margin-top:16px; display:none; }
@@ -563,7 +563,7 @@
       .footer { font-size: .7rem; padding: 1.2rem .75rem; }
 
       .login-card { padding: 32px 24px; }
-      .login-logo { height: 48px; }
+      .login-logo { height: 44px; width: auto; max-width: 180px; }
       .login-card h2 { font-size: 1.2rem; }
     }
 
@@ -582,7 +582,7 @@
   <!-- Login Overlay — hiển thị mặc định, ẩn sau khi xác thực -->
   <div id="loginOverlay" class="login-overlay">
     <div class="login-card">
-      <img src="logo_akitchen_2.jpg" alt="A.Kitchen" class="login-logo" width="64" height="64" decoding="async">
+      <img src="logo_akitchen_2.jpg" alt="A.Kitchen" class="login-logo" height="56" decoding="async">
       <h2>Cổng Dashboard Nội Bộ</h2>
       <p>Đăng nhập bằng tài khoản Google được cấp quyền</p>
       <div id="googleSignInBtn"></div>
@@ -593,7 +593,7 @@
   <!-- Header -->
   <header class="header">
     <div class="header-brand">
-      <img class="mark" src="logo_akitchen_2.jpg" alt="A.Kitchen" width="48" height="48" decoding="async">
+      <img class="mark" src="logo_akitchen-removebg-preview.png" alt="A.Kitchen" width="48" height="48" decoding="async">
       <div class="brand-text">
         <div class="brand-name">A.Kitchen</div>
         <div class="brand-sub">Siba Food Vietnam</div>
